@@ -188,7 +188,8 @@
                 <div class="wrap-box">
                     <ul class="img-list">
                         <li v-for="it in item.datas">
-                            <a href="#/site/goodsinfo/87" class="">
+                            <!-- <a href="#/site/goodsinfo/87" class=""> -->
+                            <router-link :to="'/detail/'+it.artID">
                                 <div class="img-box">
                                     <img :src="it.img_url">
                                 </div>
@@ -203,7 +204,8 @@
                                         </span>
                                     </p>
                                 </div>
-                            </a>
+                                </router-link>
+                            <!-- </a> -->
                         </li>
                     </ul>
                 </div>
