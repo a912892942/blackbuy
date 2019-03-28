@@ -195,7 +195,7 @@
                     </div>
                     <div class="txt-box">
                       <router-link :to="'/detail/'+item.id">{{item.title}}  </router-link>
-                      <span>{{item.add_time}}</span>
+                      <span>{{item.add_time | globalFormatTime('YYYY年MM月DD日')}}</span>
                     </div>
                   </li>
                 </ul>

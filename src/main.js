@@ -14,6 +14,17 @@ Vue.prototype.$axios = axios
 axios.defaults.baseURL = 'http://111.230.232.110:8899'
 //设置为 false 以阻止 vue 在启动时生成生产提示
 // Vue.config.productionTip = falses
+//导入格式化时间
+import moment from 'moment'
+//在实例化Vue之前创建全局过滤器
+Vue.filter('globalFormatTime',function(value,format){
+  if(format){
+    return moment(value).format(format)
+  }else{
+
+    return moment(value).format('YYYY-MM-DD')
+  }
+})
 let routes = [
   { path: "/", component: index },
   { path: "/index", component: index },
