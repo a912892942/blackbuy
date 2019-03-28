@@ -219,8 +219,9 @@ export default {
       hotgoodslist:[]
     };
   },
-  created() {
-    this.$axios
+  methods: {
+    getDetail(){
+          this.$axios
       .get(
         `/site/goods/getgoodsinfo/${
           this.$route.params.id
@@ -231,6 +232,16 @@ export default {
         this.goodsinfo = res.data.message.goodsinfo;
         this.hotgoodslist = res.data.message.hotgoodslist;
       });
+    }
+  },
+  created() {
+     this.getDetail()
+  },
+  watch: {
+    $route(value,oldValue){
+     this.getDetail()
+    }
+    
   }
 };
 </script>
