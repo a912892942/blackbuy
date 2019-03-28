@@ -13,7 +13,13 @@
         <div class="wrap-box">
           <div class="left-925">
             <div class="goods-box clearfix">
-              <div class="pic-box"></div>
+              <div class="pic-box">
+                <el-carousel>
+                  <el-carousel-item v-for="(item,index) in imglist" :key="index">
+                    <img :src="item.thumb_path" alt>
+                  </el-carousel-item>
+                </el-carousel>
+              </div>
               <div class="goods-spec">
                 <h1>{{goodsinfo.title}}</h1>
                 <p class="subtitle">{{goodsinfo.sub_title}}</p>
@@ -103,6 +109,8 @@
                           sucmsg=" "
                           data-type="*10-1000"
                           nullmsg="请填写评论内容！"
+                          v-model="comment"
+                          @keyup.enter="subcommet"
                         ></textarea>
                         <span class="Validform_checktip"></span>
                       </div>
@@ -113,6 +121,7 @@
                           type="submit"
                           value="提交评论"
                           class="submit"
+                          @click="subcommet"
                         >
                         <span class="Validform_checktip"></span>
                       </div>
@@ -193,7 +202,9 @@ export default {
       goodsinfo: {},
       goodsIndex: 1,
       hotgoodslist: [],
-      num1:1
+      num1: 1,
+      imglist: [],
+      comment:''
     };
   },
   methods: {
@@ -204,10 +215,25 @@ export default {
           // console.log(res);
           this.goodsinfo = res.data.message.goodsinfo;
           this.hotgoodslist = res.data.message.hotgoodslist;
+          this.imglist = res.data.message.imglist;
         });
     },
-    handleChange(){
-      console.log('我变了');
+    handleChange() {
+      console.log("我变了");
+    },
+    subcommet(){
+      if(this.comment === ''){
+        this.$message.error('请输入内容')
+      }else{
+         this.$axios.post(`site/validate/comment/post/goods/${this.$route.params.id}`,{
+          commenttxt:this.comment  
+      }).then(res=>{
+        if(res.data.status==0){
+          this.$message.success(res.data.message)
+          this.comment= ''
+        }
+      })
+      }
     }
   },
   created() {
@@ -222,4 +248,19 @@ export default {
 </script>
 
 <style>
+.pic-box {
+  height: 395px;
+  width: 320px;
+}
+.pic-box  .el-carousel,
+.pic-box  .el-carousel  .el-carousel__container,
+.pic-box  .el-carousel  .el-carousel__item {
+  width: 100%;
+  height: 100%;
+}
+.pic-box .el-carousel__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 </style>

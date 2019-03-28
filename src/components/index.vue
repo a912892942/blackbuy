@@ -109,7 +109,7 @@
           <!--幻灯片-->
           <div class="left-705">
             <el-carousel height="341px">
-              <el-carousel-item v-for="item in sliderlist" :key="item">
+              <el-carousel-item v-for="(item,index) in sliderlist" :key="index">
                 <router-link class="slider-a" :to="'/detail/'+item.id">
                   <img class="slider-img" :src="item.img_url" alt>
                 </router-link>
