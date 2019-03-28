@@ -131,37 +131,29 @@
                     <p
                       style="margin: 5px 0px 15px 69px; line-height: 42px; text-align: center; border: 1px solid rgb(247, 247, 247);"
                     >暂无评论，快来抢沙发吧！</p>
-                    <li>
+                    <li v-for="item in commentlist">
                       <div class="avatar-box">
                         <i class="iconfont icon-user-full"></i>
                       </div>
                       <div class="inner-box">
                         <div class="info">
-                          <span>匿名用户</span>
-                          <span>2017/10/23 14:58:59</span>
+                          <span>{{item.user_name}}</span>
+                          <span>{{item.add_time | globalFormatTime('YYYY-MM-DDTHH-mm-ss')}}</span>
                         </div>
-                        <p>testtesttest</p>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="avatar-box">
-                        <i class="iconfont icon-user-full"></i>
-                      </div>
-                      <div class="inner-box">
-                        <div class="info">
-                          <span>匿名用户</span>
-                          <span>2017/10/23 14:59:36</span>
-                        </div>
-                        <p>很清晰调动单很清晰调动单</p>
+                        <p>{{item.content}}</p>
                       </div>
                     </li>
                   </ul>
                   <div class="page-box" style="margin: 5px 0px 0px 62px;">
-                    <div id="pagination" class="digg">
-                      <span class="disabled">« 上一页</span>
-                      <span class="current">1</span>
-                      <span class="disabled">下一页 »</span>
-                    </div>
+                    <el-pagination
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      :current-page="pageIndex"
+                      :page-sizes="[10, 20, 30, 40]"
+                      :page-size="pageSize"
+                      layout="total, sizes, prev, pager, next, jumper"
+                      :total="totalcount"
+                    ></el-pagination>
                   </div>
                 </div>
               </div>
@@ -204,7 +196,11 @@ export default {
       hotgoodslist: [],
       num1: 1,
       imglist: [],
-      comment:''
+      comment: "",
+      pageSize: 10,
+      pageIndex: 1,
+      commentlist: [],
+      totalcount: 100
     };
   },
   methods: {
@@ -221,23 +217,49 @@ export default {
     handleChange() {
       console.log("我变了");
     },
-    subcommet(){
-      if(this.comment === ''){
-        this.$message.error('请输入内容')
-      }else{
-         this.$axios.post(`site/validate/comment/post/goods/${this.$route.params.id}`,{
-          commenttxt:this.comment  
-      }).then(res=>{
-        if(res.data.status==0){
-          this.$message.success(res.data.message)
-          this.comment= ''
-        }
-      })
+    subcommet() {
+      if (this.comment === "") {
+        this.$message.error("请输入内容");
+      } else {
+        this.$axios
+          .post(`site/validate/comment/post/goods/${this.$route.params.id}`, {
+            commenttxt: this.comment
+          })
+          .then(res => {
+            if (res.data.status == 0) {
+              this.$message.success(res.data.message);
+              this.comment = "";
+            }
+          });
       }
+    },
+    getcomment() {
+      this.$axios
+        .get(
+          `site/comment/getbypage/goods/${this.$route.params.id}?pageIndex=${
+            this.pageIndex
+          }&pageSize=${this.pageSize}`
+        )
+        .then(res => {
+          // console.log(res);
+          this.totalcount = res.data.totalcount;
+          this.commentlist = res.data.message;
+        });
+    },
+    handleSizeChange(size){
+      this.pageSize = size
+      this.getcomment()
+    },
+    handleCurrentChange(current){
+      this.pageIndex = current
+      this.getcomment()
     }
+    
+
   },
   created() {
     this.getDetail();
+    this.getcomment();
   },
   watch: {
     $route(value, oldValue) {
@@ -252,9 +274,9 @@ export default {
   height: 395px;
   width: 320px;
 }
-.pic-box  .el-carousel,
-.pic-box  .el-carousel  .el-carousel__container,
-.pic-box  .el-carousel  .el-carousel__item {
+.pic-box .el-carousel,
+.pic-box .el-carousel .el-carousel__container,
+.pic-box .el-carousel .el-carousel__item {
   width: 100%;
   height: 100%;
 }
