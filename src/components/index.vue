@@ -119,7 +119,7 @@
           <!--/幻灯片-->
           <div class="left-220">
             <ul class="side-img-list">
-              <li v-for="(item,index) in toplist">
+              <li v-for="(item,index) in toplist" :key="index">
                 <div class="img-box">
                   <label>{{index+1}}</label>
                   <img :src="item.img_url">

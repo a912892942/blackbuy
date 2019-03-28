@@ -1,11 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
-import VueRouter from "vue-router";
 import "./assets/css/style.css";
-Vue.use(VueRouter);
-import index from "./components/index.vue";
-import cart from "./components/cart.vue";
-import detail from "./components/detail.vue";
+import router from './router'
+
 // 导入axios
 import axios from "axios";
 //将axios设置到Vue的原型上,每个Vue实例都可以访问这个
@@ -34,15 +31,6 @@ Vue.filter('globalFormatTime',function(value,format){
 })
 
 
-let routes = [
-  { path: "/", component: index },
-  { path: "/index", component: index },
-  { path: "/cart", component: cart },
-  { path: "/detail/:id", component: detail }
-];
-let router = new VueRouter({
-  routes
-});
 
 new Vue({
   el: "#app",

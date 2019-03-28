@@ -229,6 +229,8 @@ export default {
             if (res.data.status == 0) {
               this.$message.success(res.data.message);
               this.comment = "";
+              this.pageIndex = 1
+              this.getcomment()
             }
           });
       }
