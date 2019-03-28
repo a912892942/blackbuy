@@ -95,15 +95,23 @@
               >
                 <ul>
                   <li>
-                    <a href="javascript:;" @click="goodsIndex=1"  :class="{selected:goodsIndex==1}">商品介绍</a>
+                    <a
+                      href="javascript:;"
+                      @click="goodsIndex=1"
+                      :class="{selected:goodsIndex==1}"
+                    >商品介绍</a>
                   </li>
                   <li>
-                    <a href="javascript:;" @click="goodsIndex=2"  :class="{selected:goodsIndex==2}">商品评论</a>
+                    <a
+                      href="javascript:;"
+                      @click="goodsIndex=2"
+                      :class="{selected:goodsIndex==2}"
+                    >商品评论</a>
                   </li>
                 </ul>
               </div>
-              <div class="tab-content entry" v-show="goodsIndex==1" v-html="goodsinfo.content" ></div>
-              <div class="tab-content"   v-show="goodsIndex==2" >
+              <div class="tab-content entry" v-show="goodsIndex==1" v-html="goodsinfo.content"></div>
+              <div class="tab-content" v-show="goodsIndex==2">
                 <div class="comment-box">
                   <div id="commentForm" name="commentForm" class="form-box">
                     <div class="avatar-box">
@@ -291,21 +299,27 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from "axios";
 export default {
-    name:'detail',
-    data(){
-      return{
-         goodsinfo:{},
-         goodsIndex:1
-      }
-    },
-    created() {
-        axios.get(`http://111.230.232.110:8899/site/goods/getgoodsinfo/${this.$route.params.id}`).then(res=>{
-            console.log(res);
-            this.goodsinfo = res.data.message.goodsinfo
-        })
-    },
+  name: "detail",
+  data() {
+    return {
+      goodsinfo: {},
+      goodsIndex: 1
+    };
+  },
+  created() {
+    this.$axios
+      .get(
+        `/site/goods/getgoodsinfo/${
+          this.$route.params.id
+        }`
+      )
+      .then(res => {
+        console.log(res);
+        this.goodsinfo = res.data.message.goodsinfo;
+      });
+  }
 };
 </script>
 

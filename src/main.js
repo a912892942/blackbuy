@@ -6,6 +6,13 @@ Vue.use(VueRouter);
 import index from "./components/index.vue";
 import cart from "./components/cart.vue";
 import detail from "./components/detail.vue";
+// 导入axios
+import axios from "axios";
+//将axios设置到Vue的原型上,每个Vue实例都可以访问这个
+Vue.prototype.$axios = axios
+//设置每个路径默认的基地址 之后的路径不用再写基地址
+axios.defaults.baseURL = 'http://111.230.232.110:8899'
+//设置为 false 以阻止 vue 在启动时生成生产提示
 // Vue.config.productionTip = falses
 let routes = [
   { path: "/", component: index },
